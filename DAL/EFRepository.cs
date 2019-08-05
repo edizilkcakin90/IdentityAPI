@@ -46,7 +46,7 @@ namespace DAL
             try
             {
                 var user = GetAll().FirstOrDefault(x => (x.ID == id));
-                if (user != null)
+                if (user!=null)
                 {
                     user.Password = model.NewPassword;
                     await db.SaveChangesAsync();
