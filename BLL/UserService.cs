@@ -130,6 +130,19 @@ namespace BLL
             smtp.Send(message);
         }
 
+        public User Authenticate(string email, string password)
+        {
+            var user = _userRepository.GetAll().SingleOrDefault(x => x.Email == email && x.Password == password);
+            
+            if (user == null)
+                return null;
+
+            if (ValidateCredentials(email, password))
+            {
+                return user;
+            }
+            return null;
+        }
     }
 }
 

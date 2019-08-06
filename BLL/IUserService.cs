@@ -14,5 +14,6 @@ namespace BLL
         Task<bool> Delete(int id);
         IEnumerable<User> GetAll();
         User GetByID(int id);
+        User Authenticate(string email, string password);
     }
 }
