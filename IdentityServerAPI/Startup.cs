@@ -68,12 +68,12 @@ namespace IdentityServerAPI
                 .AddAspNetIdentity<User>()
                 .AddProfileService<ProfileService>();
 
-            var applicationUrl = Configuration["ApplicationUrl"].TrimEnd('/');
+            //var applicationUrl = Configuration["ApplicationUrl"].TrimEnd('/');
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                .AddIdentityServerAuthentication(options =>
                {
-                   options.Authority = applicationUrl;
+                   //options.Authority = applicationUrl;
                    options.SupportedTokens = SupportedTokens.Jwt;
                    options.RequireHttpsMetadata = false; // Note: Set to true in production
                     options.ApiName = IdentityServerConfig.ApiName;
@@ -120,7 +120,7 @@ namespace IdentityServerAPI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            //app.UseSpaStaticFiles();
             app.UseIdentityServer();
 
             app.UseMvc();
