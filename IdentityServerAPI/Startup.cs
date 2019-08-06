@@ -8,6 +8,7 @@ using Core;
 using DAL;
 using DAL.Context;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,6 +44,11 @@ namespace IdentityServerAPI
             services.AddDbContext<ProjectContext>(opts => opts.UseSqlServer(("Server=localhost;Database=DbIdentityServerAPI;Trusted_Connection=True;MultipleActiveResultSets=true")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IUserService, UserService>();
+
+            services.AddSingleton<IAuthorizationHandler, ViewUserAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, ManageUserAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, ViewRoleAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, AssignRolesAuthorizationHandler>();
 
             services.AddIdentity<User, Roles>()
                 .AddEntityFrameworkStores<ProjectContext>()
@@ -84,6 +90,14 @@ namespace IdentityServerAPI
 
                 options.AddPolicy(BLL.Authorization.Policies.AssignAllowedRolesPolicy, policy => policy.Requirements.Add(new AssignRolesAuthorizationRequirement()));
             });
+
+            if (!_env.IsDevelopment() && !string.IsNullOrWhiteSpace(Configuration["HttpsRedirectionPort"]))
+            {
+                services.AddHttpsRedirection(options =>
+                {
+                    options.HttpsPort = int.Parse(Configuration["HttpsRedirectionPort"]);
+                });
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,6 +119,10 @@ namespace IdentityServerAPI
                .AllowAnyHeader());
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+            app.UseIdentityServer();
+
             app.UseMvc();
         }
     }
