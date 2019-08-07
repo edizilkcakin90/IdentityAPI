@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Principal;
 using Core;
+using IdentityServer4.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

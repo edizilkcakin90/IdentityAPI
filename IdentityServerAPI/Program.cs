@@ -24,10 +24,10 @@ namespace IdentityServerAPI
                 .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, logging) =>
                 {
-                    logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.AddDebug();
-                    logging.AddEventSourceLogger();
+                    //logging.ClearProviders();
+                    logging.AddConsole().SetMinimumLevel(LogLevel.Trace);
+                    //logging.AddDebug();
+                    //logging.AddEventSourceLogger();
                 });
     }
 }
