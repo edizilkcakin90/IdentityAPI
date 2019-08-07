@@ -59,7 +59,8 @@ namespace BLL
         public IEnumerable<User> GetAll()
         {
             //return _userRepository.GetAll();
-            return _userRepository.GetAll().Select(x => {
+            return _userRepository.GetAll().Select(x =>
+            {
                 x.Password = null;
                 return x;
             });
@@ -128,20 +129,6 @@ namespace BLL
             SmtpServer.EnableSsl = true;
 
             smtp.Send(message);
-        }
-
-        public User Authenticate(string email, string password)
-        {
-            var user = _userRepository.GetAll().SingleOrDefault(x => x.Email == email && x.Password == password);
-            
-            if (user == null)
-                return null;
-
-            if (ValidateCredentials(email, password))
-            {
-                return user;
-            }
-            return null;
         }
     }
 }

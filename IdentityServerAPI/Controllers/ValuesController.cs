@@ -5,32 +5,22 @@ using System.Threading.Tasks;
 using BLL;
 using Core;
 using IdentityServer4.AccessTokenValidation;
+using log4net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerAPI.Controllers
-{
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
+{    
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
         private readonly IUserService _userService;
+        private static readonly ILog log = LogManager.GetLogger(typeof(ValuesController));
 
         public ValuesController(IUserService userService)
         {
             _userService = userService;
-        }
-
-        [HttpPost("authenticate")]
-        [Route("api/authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
-        {
-            var user = _userService.Authenticate(userParam.Email, userParam.Password);
-
-            if (user == null)
-                return BadRequest(new { message = "Email or password is incorrect" });
-            return Ok(user);
         }
 
         // GET api/values
@@ -39,11 +29,13 @@ namespace IdentityServerAPI.Controllers
         {
             try
             {
-                var users = _userService.GetAll();                
+                var users = _userService.GetAll();
+                log.Info("Users called successfully");
                 return Ok(users);
             }
             catch (Exception ex)
             {
+                log.Error("Couldn't called all users", ex);
                 return NotFound(ex);
             }
         }
@@ -56,13 +48,16 @@ namespace IdentityServerAPI.Controllers
             {
                 var user = _userService.GetByID(id);
                 if (user == null)
-                {                    
+                {
+                    log.Error($"Couldn't find user with the {id}");
                     return NotFound();
-                }                
+                }
+                log.Info($"User called by id: {id}");
                 return Ok(user);
             }
             catch (Exception ex)
             {
+                log.Fatal("Fatal Error", ex);
                 return NotFound(ex);
             }
         }
@@ -75,12 +70,15 @@ namespace IdentityServerAPI.Controllers
             {
                 if (await _userService.RegisterUser(model) == true)
                 {
+                    log.Info($"User has been regostered with the email address: {model.regEmail}");
                     return Ok(_userService.GetAll());
                 }
+                log.Error("Post action error");
                 return StatusCode(500);
             }
             catch (Exception ex)
-            {                
+            {
+                log.Fatal("Fatal Error", ex);
                 return StatusCode(500, ex);
             }
         }
@@ -92,10 +90,12 @@ namespace IdentityServerAPI.Controllers
             try
             {
                 await _userService.Update(id, model);
+                log.Info($"User succesfully updated with the id number:{model.ID}");
                 return Ok(_userService.GetAll());
             }
             catch (Exception ex)
             {
+                log.Error($"Couldn't find user with the {id}", ex);
                 return NotFound(ex);
             }
         }
@@ -108,12 +108,15 @@ namespace IdentityServerAPI.Controllers
             {
                 if (await _userService.Delete(id))
                 {
+                    log.Info($"User with the id number:{id} successfully deleted");
                     return Ok(_userService.GetAll());
                 }
+                log.Error($"Couldn't find user with the {id}");
                 return NotFound();
             }
             catch (Exception ex)
             {
+                log.Fatal("Fatal Error", ex);
                 return StatusCode(500, ex);
             }
         }
@@ -123,10 +126,12 @@ namespace IdentityServerAPI.Controllers
             try
             {
                 _userService.ForgotPassword(id, email);
+                log.Info($"Forgot Password mail has been sent to the user with the email :{email}");
                 return Ok();
             }
             catch (Exception ex)
             {
+                log.Fatal("Fatal Error", ex);
                 return StatusCode(500, ex);
             }
         }
@@ -137,10 +142,12 @@ namespace IdentityServerAPI.Controllers
             {
                 User newUser = model;
                 await _userService.RegisterUser(model);
+                log.Info("User successfully has been registered.");
                 return Ok(_userService.GetAll());
             }
             catch (Exception ex)
             {
+                log.Fatal("Couldnt register user.", ex);
                 return StatusCode(500, ex);
             }
         }
@@ -152,12 +159,15 @@ namespace IdentityServerAPI.Controllers
                 var user = _userService.ValidateCredentials(email, password);
                 if (user)
                 {
+                    log.Info("User info matches with database.");
                     return Ok(user);
                 }
+                log.Error("User info didnt match with database.");
                 return NotFound();
             }
             catch (Exception ex)
             {
+                log.Fatal("Fatal Error", ex);
                 return StatusCode(500, ex);
             }
         }
@@ -168,15 +178,18 @@ namespace IdentityServerAPI.Controllers
             {
                 if (await _userService.ChangePassword(id, model))
                 {
+                    log.Info("User's password successfully has changed");
                     return Ok(model);
                 }
                 else
                 {
+                    log.Error("Couldnt change user's password");
                     return StatusCode(500);
                 }
             }
             catch (Exception ex)
             {
+                log.Fatal("Fatal Error", ex);
                 return StatusCode(500, ex);
             }
         }

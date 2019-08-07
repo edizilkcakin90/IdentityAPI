@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20190802134204_DbIdentityServerAPI")]
+    [Migration("20190807074825_DbIdentityServerAPI")]
     partial class DbIdentityServerAPI
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

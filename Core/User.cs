@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core
 {
-    public class User :IdentityUser,IAuditableEntity
+    public class User
     {
         [Key]
         [Required]
@@ -21,12 +21,5 @@ namespace Core
         public string IdentityNo { get; set; }
         public char Sex { get; set; }
         public string Password { get; set; }
-        public bool IsEnabled { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
-        public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
-        public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
     }
 }

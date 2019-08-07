@@ -13,7 +13,6 @@ namespace BLL
         Task<bool> Update(int id, User model);
         Task<bool> Delete(int id);
         IEnumerable<User> GetAll();
-        User GetByID(int id);
-        User Authenticate(string email, string password);
+        User GetByID(int id);        
     }
 }
