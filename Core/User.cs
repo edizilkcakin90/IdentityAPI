@@ -18,7 +18,7 @@ namespace Core
         public string IdentityNo { get; set; }
         public char Sex { get; set; }
         public string Password { get; set; }
-        public string Roles { get; set; }
-        public string Token { get; set; }
+        //public string Roles { get; set; }
+        //public string Token { get; set; }
     }
 }
