@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core
@@ -21,5 +18,7 @@ namespace Core
         public string IdentityNo { get; set; }
         public char Sex { get; set; }
         public string Password { get; set; }
+        public string Roles { get; set; }
+        public string Token { get; set; }
     }
 }

@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BLL;
 using Core;
-using IdentityServer4.AccessTokenValidation;
 using log4net;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerAPI.Controllers
-{    
+{
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private static readonly ILog log = LogManager.GetLogger(typeof(ValuesController));
+        private static readonly ILog log = LogManager.GetLogger(typeof(UserController));
 
-        public ValuesController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
-        // GET api/values
+        // GET api/user
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {

@@ -1,9 +1,6 @@
 ﻿using BLL;
-using Core;
 using DAL;
 using DAL.Context;
-using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
