@@ -28,9 +28,9 @@ namespace IdentityServer
             {
                 new Client
                 {
-                        ClientId = "ConsoleApp_ClientId",
+                        ClientId = "ClientId",
                         ClientSecrets = {
-                            new Secret( "secret_for_the_consoleapp".Sha256() )
+                            new Secret( "secret".Sha256() )
                         },
                         //http://docs.identityserver.io/en/latest/topics/grant_types.html
                         AllowedGrantTypes = GrantTypes.ClientCredentials,
@@ -48,10 +48,10 @@ namespace IdentityServer
                 new TestUser
                 {
                     SubjectId = "1",
-                    Username = "demo",
-                    Password = "demo".Sha256()
+                    Username = "admin",
+                    Password = "admin".Sha256()
                 }
             };
         }
     }
-}
+} 
